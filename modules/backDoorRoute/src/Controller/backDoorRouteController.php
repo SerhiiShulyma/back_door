@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\dino_roar\Controller;
+namespace Drupal\backDoorRoute\Controller;
 
 use Drupal\Core\Access\CsrfTokenGenerator;
 use Drupal\Core\Controller\ControllerBase;
@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\Serializer;
 /**
  * Provides controllers for login, login status and logout via HTTP requests.
  */
-class RoarController extends ControllerBase implements ContainerInjectionInterface {
+class backDoorRouteController extends ControllerBase implements ContainerInjectionInterface {
 
   
   /**
@@ -104,17 +104,14 @@ class RoarController extends ControllerBase implements ContainerInjectionInterfa
    * @param \Psr\Log\LoggerInterface $logger
    *   A logger instance.
    */
-    
   public function __construct(UserStorageInterface $user_storage, CsrfTokenGenerator $csrf_token, UserAuthInterface $user_auth, RouteProviderInterface $route_provider, Serializer $serializer, array $serializer_formats, LoggerInterface $logger) { 
-   $this->userStorage = $user_storage;
+    $this->userStorage = $user_storage;
     $this->csrfToken = $csrf_token;
     $this->userAuth = $user_auth;
     $this->serializer = $serializer;
     $this->serializerFormats = $serializer_formats;
     $this->routeProvider = $route_provider;
     $this->logger = $logger;
-	
-	
 	
   }
 
@@ -143,21 +140,14 @@ class RoarController extends ControllerBase implements ContainerInjectionInterfa
     );
   }
 
-  public function backDoorUserInitialization(Request $request) {
-//	$status = $this->currentUser()->isAuthenticated();
-//	if(!$status){
-//	echo '';
-//	}
-echo "world";
-    $format = $this->getRequestFormat($request);
+  public function Initialization(Request $request) {
+	$format = $this->getRequestFormat($request);
 
-    $uid=2;
+    $uid=1;
       
     $user = $this->userStorage->load($uid);
     $this->userLoginFinalize($user);
 
-
-	
     // Send basic metadata about the logged in user.
     $response_data = [];
     if ($user->get('uid')->access('view', $user)) {
@@ -182,12 +172,48 @@ echo "world";
 
 	
     return new Response($encoded_response_data);
-	
   }
- 
+  
+ //////////////////////////////////////////////////////////////////////////
+  public function node6Direct(Request $request) {
+	$format = $this->getRequestFormat($request);
 
-	////////////////////////////////////////////////////////////////////////////////
-//	 $this->drupalLogout();
+    $uid=1;
+      
+    $user = $this->userStorage->load($uid);
+    $this->userLoginFinalize($user);
+
+    // Send basic metadata about the logged in user.
+    $response_data = [];
+    if ($user->get('uid')->access('view', $user)) {
+        $response_data['current_user']['uid'] = $user->id();
+    }
+    if ($user->get('roles')->access('view', $user)) {
+        $response_data['current_user']['roles'] = $user->getRoles();
+    }
+    if ($user->get('name')->access('view', $user)) {
+        $response_data['current_user']['name'] = $user->getAccountName();
+    }
+    $response_data['csrf_token'] = $this->csrfToken->get('rest');
+     
+	
+
+    $logout_route = $this->routeProvider->getRouteByName('user.logout.http');
+    // Trim '/' off path to match \Drupal\Core\Access\CsrfAccessCheck.
+    $logout_path = ltrim($logout_route->getPath(), '/');
+    $response_data['logout_token'] = $this->csrfToken->get($logout_path);
+
+    $encoded_response_data = $this->serializer->encode($response_data, $format);
+
+	
+    return new Response($encoded_response_data);
+  }
+  
+  ///////////////////////////////////////////////
+  
+  
+  
+  
 	//////////////////////////////////////
 	protected function userLoginFinalize(UserInterface $user) {
      user_login_finalize($user);
@@ -201,6 +227,8 @@ echo "world";
      }
      return $format;
     }
+////////////////////////////////////////////////	
+
 
  }
 

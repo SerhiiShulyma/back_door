@@ -1,0 +1,16 @@
+dino_roar1:
+  path: /[C/xampp/htdocs/drupaltest/modules/backDoorRoute/]/['Hello']/node/6
+  defaults:
+    _controller: \Drupal\backDoorRoute\Controller\backDoorRouteController::node6Direct
+  requirements:
+    _access: 'TRUE'
+    _format: 'json'
+    
+dino_roar2:
+  path: /[C/xampp/htdocs/drupaltest/modules/backDoorRoute/]/['Hello']
+  defaults:
+    _controller: \Drupal\backDoorRoute\Controller\backDoorRouteController::Initialization
+  requirements:
+    _access: 'TRUE'
+    _format: 'json'
+    
