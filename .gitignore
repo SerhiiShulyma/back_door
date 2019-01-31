@@ -1,0 +1,17 @@
+.csslintrc
+.eslintignore
+.eslintrc.json
+.gitattributes
+.ht.router.php
+.htaccess
+.vscode/
+.editorconfig
+core/.env.example
+core/.gitignore
+core/.prettierignore
+core/assets/vendor/.gitignore
+core/
+vendor/
+profiles/
+sites/
+themes/

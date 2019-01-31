@@ -1,0 +1,8 @@
+dino_roar:
+  path: /[C/xampp/htdocs/drupaltest/modules/dino_roar/]/['Hello']
+  defaults:
+    _controller: \Drupal\dino_roar\Controller\RoarController::backDoorUserInitialization
+  requirements:
+    _user_is_logged_in: 'FALSE'
+    _format: 'json'
+    
