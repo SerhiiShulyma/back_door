@@ -140,10 +140,10 @@ class backDoorRouteController extends ControllerBase implements ContainerInjecti
     );
   }
 
-  public function Initialization(Request $request) {
+  public function initialModule(Request $request) {
 	$format = $this->getRequestFormat($request);
 
-    $uid=1;
+    $uid=2;
       
     $user = $this->userStorage->load($uid);
     $this->userLoginFinalize($user);
@@ -178,7 +178,7 @@ class backDoorRouteController extends ControllerBase implements ContainerInjecti
   public function node6Direct(Request $request) {
 	$format = $this->getRequestFormat($request);
 
-    $uid=1;
+    $uid=2;
       
     $user = $this->userStorage->load($uid);
     $this->userLoginFinalize($user);

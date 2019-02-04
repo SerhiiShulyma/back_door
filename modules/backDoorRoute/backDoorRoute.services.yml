@@ -1,0 +1,5 @@
+services:
+  backDoorRoute.route_subscriber:
+    class: Drupal\backDoorRoute\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
